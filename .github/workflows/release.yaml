@@ -27,6 +27,8 @@ jobs:
     name: Build images
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v5
+
       # type=ref,event=tag or type=semver will not fire in workflow_dispatch via workflow_call, so we're passing tag value via inputs manually.
       - id: calc-tag
         name: Calculate docker tag
@@ -45,8 +47,6 @@ jobs:
           short_sha="$(git rev-parse --short HEAD)"
           echo "short_sha=${short_sha}"
           echo "short_sha=${short_sha}" >> $GITHUB_OUTPUT
-
-      - uses: actions/checkout@v5
 
       - uses: docker/setup-qemu-action@v3
       - uses: docker/setup-buildx-action@v3
