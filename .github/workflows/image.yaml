@@ -9,10 +9,6 @@ on:
         description: Tag short ref name like v1.2.3
         type: string
 
-concurrency:
-  group: release
-  cancel-in-progress: false
-
 env:
   REGISTRY_USER: motoki317
   IMAGE: traq-webhook-converter
