@@ -3,6 +3,8 @@ package main
 import (
 	"bytes"
 	"text/template"
+
+	"github.com/Masterminds/sprig/v3"
 )
 
 type Templater struct {
@@ -10,7 +12,9 @@ type Templater struct {
 }
 
 func NewTemplater(tmplStr string) (*Templater, error) {
-	tmpl, err := template.New("webhook").Parse(tmplStr)
+	tmpl, err := template.New("webhook").
+		Funcs(sprig.FuncMap()).
+		Parse(tmplStr)
 	if err != nil {
 		return nil, err
 	}
