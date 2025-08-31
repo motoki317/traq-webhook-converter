@@ -35,8 +35,12 @@ func (s *Server) handle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Post
-	err = PostWebhook(config.WebhookURL, msg, config.Template)
+	err = PostWebhook(config.Webhook.URL, msg, config.Webhook.Secret)
 	if err != nil {
-		panic(err)
+		slog.Error("posting webhook", "err", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
 	}
+
+	w.WriteHeader(http.StatusOK)
 }

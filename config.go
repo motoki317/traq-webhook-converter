@@ -8,9 +8,12 @@ import (
 )
 
 type Config struct {
-	Port       int    `yaml:"port" mapstructure:"port"`
-	Template   string `yaml:"template" mapstructure:"template"`
-	WebhookURL string `yaml:"webhook_url" mapstructure:"webhook_url"`
+	Port     int    `yaml:"port" mapstructure:"port"`
+	Template string `yaml:"template" mapstructure:"template"`
+	Webhook  struct {
+		URL    string `yaml:"url" mapstructure:"url"`
+		Secret string `yaml:"secret" mapstructure:"secret"`
+	} `yaml:"webhook" mapstructure:"webhook"`
 }
 
 func (c *Config) Validate() error {
@@ -20,8 +23,8 @@ func (c *Config) Validate() error {
 	if c.Template == "" {
 		return errors.New("template is required")
 	}
-	if c.WebhookURL == "" {
-		return errors.New("webhook_url is required")
+	if c.Webhook.URL == "" {
+		return errors.New("webhook.url is required")
 	}
 	return nil
 }
@@ -42,7 +45,8 @@ func init() {
 	// Set defaults
 	viper.SetDefault("port", 8080)
 	viper.SetDefault("template", "no template set!")
-	viper.SetDefault("webhook_url", "")
+	viper.SetDefault("webhook.url", "")
+	viper.SetDefault("webhook.secret", "")
 }
 
 func NewConfig(location string) (*Config, error) {
